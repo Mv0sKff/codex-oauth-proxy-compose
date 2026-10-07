@@ -40,5 +40,3 @@ volumes:
 **Base URL:** `http://127.0.0.1:9879/v1`. **API key:** the value printed in `docker compose logs`.
 
 Rebuild to update: `docker compose up -d --build`.
-
-See [DOCUMENTATION.md](DOCUMENTATION.md) for credential paths, persistence, devbox support, and troubleshooting.
