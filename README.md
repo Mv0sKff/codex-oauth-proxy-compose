@@ -45,13 +45,3 @@ Start or update the prebuilt image:
 docker compose pull
 docker compose up -d
 ```
-
-## Published image
-
-[GitHub Actions](https://github.com/Mv0sKff/codex-oauth-proxy-compose/actions/workflows/publish-image.yml) builds and publishes the Linux AMD64 image on every push to `main`, on `v*` tags, and when run manually. No registry credentials need to be configured in the repository: publishing uses the workflow's built-in `GITHUB_TOKEN`.
-
-- `ghcr.io/mv0skff/codex-oauth-proxy-compose:latest` tracks the latest build from `main`.
-- `sha-<short-commit>` tags identify the source commit used by a build.
-- Git tags such as `v1.0.0` also publish an image with that tag.
-
-Each build fetches the latest upstream proxy version. Run the workflow manually to rebuild for an upstream update. For the local-build Compose file included in this repository, rebuild with `docker compose up -d --build`.
