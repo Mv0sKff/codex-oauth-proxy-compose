@@ -1,0 +1,44 @@
+services:
+  codex-oauth-proxy:
+    build:
+      context: .
+      no_cache: true
+    restart: unless-stopped
+    environment:
+      ADMIN_API_KEY: "${ADMIN_API_KEY:-}"
+      PORT: "9879"
+      DISABLE_HEALTH_LOGS: "true"
+    ports:
+      - "127.0.0.1:9879:9879"
+    volumes:
+      - proxy-state:/state
+      - type: bind
+        source: "${CODEX_AUTH_PATH:?Set CODEX_AUTH_PATH to an existing auth.json file}"
+        target: /data/auth.json
+        bind:
+          create_host_path: false
+          selinux: Z
+    read_only: true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 512m
+    logging:
+      driver: local
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:9879/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  proxy-state:
